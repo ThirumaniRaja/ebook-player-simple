@@ -1,0 +1,28 @@
+{
+  "npmScope": "tce-ebook",
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "projects": {
+    "ebook-player-simple": {
+      "tags": []
+    },
+    "ebook-player-simple-e2e": {
+      "tags": [],
+      "implicitDependencies": ["ebook-player-simple"]
+    },
+    "ebook-player": {
+      "tags": []
+    },
+    "lib-config": {
+      "tags": []
+    }
+  }
+}

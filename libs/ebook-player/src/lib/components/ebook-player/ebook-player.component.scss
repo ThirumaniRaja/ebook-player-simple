@@ -1,0 +1,79 @@
+.ebook-middle-drawer {
+    background: transparent !important;
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+  
+    #mainWorksheet {
+      height: 100%;
+    }
+    .worksheet-player-container {
+      position: relative;
+      border: solid 1px gray;
+      background-color: tranparent;
+      background-color: #2f333a;
+      height: 100%;
+    }
+  
+    #viewerContainer {
+      height: 100%;
+    }
+  }
+  
+  ::-webkit-scrollbar {
+    width: 0 !important;
+  }
+  
+
+//   footer
+  .footer { 
+    position: fixed;
+    left: 20%;
+    bottom: 2%;
+    width: 60%;
+    padding: 10px;
+    border-radius: 2px;
+    background-color: rgb(187, 149, 185);
+    color: white;
+    text-align: center;
+ }
+
+ .scroll-wrapper {
+    // line-height: 0;
+    // display: flex;
+  }
+  button {
+    background: transparent;
+    
+  }
+  
+  .arrow-icon {
+    display: block;
+    line-height: 0;
+  }
+  
+  .arrow-icon.scrolldown  {
+    width: 25px;
+    height: 25px;
+    transform: rotate(0deg);
+  }
+  
+  .arrow-icon.scrollup  {
+    width: 25px;
+    height: 25px;
+    transform: rotate(180deg);
+  }
+  
+  .arrow-icon   {
+    fill: #fff;
+  }
+
+  .currentPageNo{
+    padding: 5px 8px 5px 8px;
+    font-size: 18px;
+    color: black;
+    background-color: blanchedalmond;
+    vertical-align: super;
+  }
+  
+ 

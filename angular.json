@@ -1,0 +1,208 @@
+{
+  "version": 1,
+  "projects": {
+    "ebook-player-simple": {
+      "projectType": "application",
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "apps/ebook-player-simple",
+      "sourceRoot": "apps/ebook-player-simple/src",
+      "prefix": "tce-ebook",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/ebook-player-simple",
+            "index": "apps/ebook-player-simple/src/index.html",
+            "main": "apps/ebook-player-simple/src/main.ts",
+            "polyfills": "apps/ebook-player-simple/src/polyfills.ts",
+            "tsConfig": "apps/ebook-player-simple/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "apps/ebook-player-simple/src/favicon.ico",
+              "apps/ebook-player-simple/src/assets"
+            ],
+            "styles": ["apps/ebook-player-simple/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/ebook-player-simple/src/environments/environment.ts",
+                  "with": "apps/ebook-player-simple/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "ebook-player-simple:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "ebook-player-simple:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "ebook-player-simple:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/ebook-player-simple/tsconfig.app.json",
+              "apps/ebook-player-simple/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/ebook-player-simple/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/ebook-player-simple/jest.config.js",
+            "tsConfig": "apps/ebook-player-simple/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "apps/ebook-player-simple/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "ebook-player-simple-e2e": {
+      "root": "apps/ebook-player-simple-e2e",
+      "sourceRoot": "apps/ebook-player-simple-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/ebook-player-simple-e2e/cypress.json",
+            "tsConfig": "apps/ebook-player-simple-e2e/tsconfig.e2e.json",
+            "devServerTarget": "ebook-player-simple:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "ebook-player-simple:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["apps/ebook-player-simple-e2e/tsconfig.e2e.json"],
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/ebook-player-simple-e2e/**"
+            ]
+          }
+        }
+      }
+    },
+    "ebook-player": {
+      "projectType": "library",
+      "root": "libs/ebook-player",
+      "sourceRoot": "libs/ebook-player/src",
+      "prefix": "ece",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/ebook-player/tsconfig.lib.json",
+              "libs/ebook-player/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/ebook-player/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/ebook-player/jest.config.js",
+            "tsConfig": "libs/ebook-player/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "libs/ebook-player/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "lib-config": {
+      "projectType": "library",
+      "root": "libs/lib-config",
+      "sourceRoot": "libs/lib-config/src",
+      "prefix": "tce-ebook",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/lib-config/tsconfig.lib.json",
+              "libs/lib-config/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/lib-config/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/lib-config/jest.config.js",
+            "tsConfig": "libs/lib-config/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "libs/lib-config/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "schematics": {
+    "@nrwl/angular:application": {
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest"
+    }
+  },
+  "defaultProject": "ebook-player-simple"
+}
