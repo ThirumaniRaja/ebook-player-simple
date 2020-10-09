@@ -7,14 +7,7 @@
   (scrollPageChange)="scrollPageChange($event)"
   (resetPdfRender)="resetPdfRender($event)"
   (setPdfCurrentPage)="setPdfCurrentPage($event)"
-  (gotoNextChapter)="gotoNextChapter($event)"
 >
-<div *ngIf="pdfId">
-   <ng-container #konvaContainer class="canvas-container">
-       </ng-container>
-       
-   </div>
-
 
   <pdf-viewer
     style="display: block;"

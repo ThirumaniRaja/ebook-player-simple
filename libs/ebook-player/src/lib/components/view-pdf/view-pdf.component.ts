@@ -36,8 +36,9 @@ export class ViewPdfComponent implements OnInit {
   //canvasContext: ResourceType;
 
   @ViewChild('pdfWrapper', { static: true }) pdfWrapper: ElementRef;
-  @Input() canvasContext: ResourceType;
-  @Input() ignoreScale = false;
+  @Input() zoomValue;
+  //@Input() canvasContext: ResourceType;
+ // @Input() ignoreScale = false;
   @Input() set stageId(stageId: string) {
     
   }
@@ -59,7 +60,6 @@ export class ViewPdfComponent implements OnInit {
   @Output() emitPdfLoadComplete = new EventEmitter();
   @Output() emitPdfRendered = new EventEmitter();
   @Output() emitScrollPageChange = new EventEmitter();
-  @Output() emitGotoNextChapter = new EventEmitter();
 
   pdfPageCollection: HTMLCollection;
   currentPdfPage: HTMLElement;
@@ -82,7 +82,7 @@ export class ViewPdfComponent implements OnInit {
   }
 
   pageRendered(e: CustomPdfEvent) {
-    console.log("e",e)
+    //console.log("e",e)
     //on last rendered page, this fires for each page rendered
     if (e.pageNumber === this.numEbookPages.length) {
       this.gotoPage(this.pdfCurrentPageObj.pageNumber);
@@ -140,15 +140,5 @@ export class ViewPdfComponent implements OnInit {
       eventType: pdfCurrentPage.eventType
     };
   }
-
-  gotoNextChapter(event: any) {
-    this.emitGotoNextChapter.emit();
-  }
-
-  get resourceType() {
-    return ResourceType;
-  }
-
-  
 
 }

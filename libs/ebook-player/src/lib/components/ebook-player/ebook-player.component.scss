@@ -68,12 +68,21 @@
     fill: #fff;
   }
 
-  .currentPageNo{
+  span{
     padding: 5px 8px 5px 8px;
     font-size: 18px;
     color: black;
     background-color: blanchedalmond;
     vertical-align: super;
+  }
+
+  .zoomBtn{
+        margin-left: 5px;
+    border-radius: 3px;
+  }
+
+  .zoomSpan{
+    margin-left: 10px;
   }
   
  

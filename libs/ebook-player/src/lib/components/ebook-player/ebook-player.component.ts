@@ -8,11 +8,13 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
+
 import { ResourceType } from '../../enums/resource-type.enum';
 import { ScrollState } from '../../enums/scroll.state.enum';
 import paginate from 'jw-paginate';
 import { EbookService } from '../../services/ebook.service';
 import { Subscription } from 'rxjs';
+import { PanZoomService } from '../../services/panzoom.service';
 
 @Component({
   selector: 'ece-ebook-player',
@@ -20,6 +22,8 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./ebook-player.component.scss']
 })
 export class EbookPlayerComponent implements OnInit {
+
+ 
   public numEbookPages = [0, 1, 2, 3, 4, 5, 6, 7,8,9,10,11,12,13,14,15,16];
   pager: any = {};
   MAX_NUMBER_PAGES = 7;
@@ -27,57 +31,22 @@ export class EbookPlayerComponent implements OnInit {
   pages: Array<number>;
   pageSize = 1;
   changePage = new EventEmitter<any>(true);
-  @Output() emitScroll = new EventEmitter();
-  @Input('scrollContainerRef') set scrollContainerRef(elem: HTMLElement) {
-    if (elem) {
-      console.log('ScrollComponent -> @Input -> elem', elem);
-      this.scrollElement = elem;
-      this.scrollState = this.checkScrollBookends(
-        0,
-        this.scrollElement.scrollHeight - this.scrollElement.clientHeight
-      );
-      this.scrollElement.addEventListener('scroll', e => {
-        this.scrollState = this.checkScrollBookends(
-          this.scrollElement.scrollTop,
-          this.scrollElement.scrollHeight - this.scrollElement.clientHeight
-        );
-      });
-    }
-  }
-
-  @ViewChild('middleDrawer', { static: false }) middleDrawer: ElementRef;
-  public toggle = {
-    left: false,
-    right: false
-  };
-  public hasChapterResources = false;
-  public showThumbnails = false;
-  public pdfFilePath: any;
+  
   public selectedPage: { pageNumber: number; eventType: string };
-  public pdfSource: string;
   public pdfId: string;
   public initialPage = 1;
 
-  public showTooltip = false;
-  public isKeyboardOpen = false;
+ 
   public $subs = new Subscription();
   public scrollContainerRe: HTMLElement;
-  public isebookResourceOpen = false;
-  public currentChapterId: any;
-  playerFactory;
-  @HostBinding('class') get hostClasses() {
-    let classes = '';
-    if (this.isebookResourceOpen) {
-      classes += ' container-displayN';
-    }
-    return classes;
-  }
+  public zoomValue = 100;
+ 
 
   public scrollElement: HTMLElement = null;
   public intervalScroll: number;
   public scrollState: ScrollState = ScrollState.START;
 
-  constructor(private ebookService: EbookService) {}
+  constructor(private ebookService: EbookService,private panZoomService:PanZoomService) {}
 
   ngOnInit() {
     this.pages = this.numEbookPages;
@@ -92,107 +61,8 @@ export class EbookPlayerComponent implements OnInit {
     );
   }
 
-  public beginLoadingResource() {
-    if (this.currentChapterId) {
-    }
-  }
-
-  ngOnDestroy() {}
-
-  public pdfRendered(customPdfEvent: {
-    cssTransform: boolean;
-    currentPage: number;
-    source: any;
-  }) {}
-
   public getPageData(pdf: any) {
-    this.pdfId = pdf._pdfInfo.fingerprint;
-  }
-
-  public toggleBar(state: string) {
-    if (state === 'left') {
-      this.toggle.left = !this.toggle.left;
-    } else {
-      this.toggle.right = !this.toggle.right;
-    }
-  }
-
-  public toggleThumbnails(event: any) {
-    this.showThumbnails = true;
-  }
-
-  public triggerScroll(emittedObject: {
-    eventName: string;
-    type: string;
-    cachedCurrentTarget: any;
-  }) {
-    
-    if (
-      emittedObject.eventName === 'click' ||
-      emittedObject.eventName === 'touchstart'
-    ) {
-      const pdfElement =
-        emittedObject.cachedCurrentTarget.parentNode.parentNode.parentNode
-          .parentNode.parentNode.previousElementSibling.firstChild.firstChild;
-      if (emittedObject.type === 'up') {
-        pdfElement.scrollTop -= 20;
-      } else {
-        pdfElement.scrollTop += 20;
-      }
-    }
-  }
-
-  public updatePdfPage(currentPageObj: { currentPage: number }) {}
-
-  public gotoNextChapter(event: any) {}
-
-  public goToPage(val: string) {}
-
-  public checkScrollBookends(currentScrollPos, scrollEndTarget) {
-    console.log(
-      'ScrollComponent -> checkScrollBookends -> scrollEndTarget',
-      scrollEndTarget
-    );
-    console.log(
-      'ScrollComponent -> checkScrollBookends -> currentScrollPos',
-      currentScrollPos
-    );
-    if (currentScrollPos === 0) {
-      return ScrollState.START;
-    }
-    if (currentScrollPos >= scrollEndTarget) {
-      return ScrollState.END;
-    }
-
-    return null;
-  }
-
-  public scrollEvent(direction: string, event: Event) {
-    console.log(direction, event);
-    const cachedCurrentTarget = event.currentTarget;
-    if (event.type === 'mousedown' || event.type === 'touchstart') {
-      this.emitScrollEvent(event, cachedCurrentTarget, direction);
-
-      this.intervalScroll = <any>setInterval(() => {
-        this.emitScrollEvent(event, cachedCurrentTarget, direction);
-      }, 100);
-    } else {
-      clearInterval(this.intervalScroll);
-      this.emitScrollEvent(event, cachedCurrentTarget, direction);
-    }
-  }
-
-  public emitScrollEvent(
-    event: Event,
-    cachedCurrentTarget: EventTarget,
-    direction: string
-  ) {
-    this.emitScroll.emit({
-      type: direction,
-      eventName: event.type,
-      _event: event,
-      cachedCurrentTarget: cachedCurrentTarget
-    });
+    this.pdfId = "pdfViewer";
   }
 
   //pagiation
@@ -235,5 +105,24 @@ export class EbookPlayerComponent implements OnInit {
       pageNumber: pageNumber,
       eventType: 'click'
     });
+  }
+
+  dynamicZoom(value){
+    if(value === 'in'){
+      this.zoomValue = this.zoomValue+10;
+      if(this.zoomValue <= 160){
+        document.getElementById('pdfViewer').style.zoom = this.zoomValue + "%" ;
+      }
+    }
+    else{
+      if(this.zoomValue > 160)
+      {
+        this.zoomValue = 160;
+      }
+      this.zoomValue = this.zoomValue-10;
+      if(this.zoomValue >= 10){
+        document.getElementById('pdfViewer').style.zoom = this.zoomValue + "%" ;
+      }
+    }
   }
 }

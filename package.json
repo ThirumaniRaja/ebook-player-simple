@@ -44,6 +44,7 @@
     "ng2-pdf-viewer": "^6.1.2",
     "pdfjs-dist": "^2.2.228",
     "rxjs": "~6.5.0",
+    "svg-pan-zoom": "^3.6.1",
     "zone.js": "^0.10.2"
   },
   "devDependencies": {
